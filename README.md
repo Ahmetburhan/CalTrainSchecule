@@ -1,2 +1,2 @@
-# CalTrainSchecule
+# CalTrainSchedule
 CalTrain Scheduler
