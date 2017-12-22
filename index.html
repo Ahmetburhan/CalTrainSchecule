@@ -6,12 +6,12 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
 <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
  -->    <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
 <!--     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
  -->    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+ <link rel="stylesheet" href="assets/css/style.css">
 
   </head>
     <!-- Firebase Reference -->
@@ -21,8 +21,16 @@
     <!-- <script src="http://momentjs.com/downloads/moment.js"></script> -->
      <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
 </head>
-<body>
+<body> <style>
+        body {
+            /* Adding !important forces the browser to overwrite the default style applied by Bootstrap */
+          background: url(assets/images/station-new-york-city-train-stations-grand-central-2560x1440-wallpaper.jpg) no-repeat center fixed !important;
+          background-size: cover !important;
+          font-color: white: !important;
+            background-color: @body-bg !important;
 
+        }
+</style>
 
 <!-- Train Tracker -->
 <div class="container">
@@ -30,8 +38,9 @@
     <!-- Jumbotron -->
     <div class="jumbotron" style="background-color: crimson; color: white">
         <h1 class="nav-header center">CalTrain Time Schedule</h1>
-        <img src="assets/images/caltrain.jpg" class="img-responsive rounded center" alt="Responsive image">
+        <img src="assets/images/caltrain.jpg" class="responsive-img" alt="Responsive image" width="100%">
         <h3 class="tagline center">SF Southbound Real-Time Schedule</h3>
+        <h1 class="current-time tagline center"></h1>
     </div>
 
     <div class="row">
@@ -43,7 +52,7 @@
                     <h3 class="panel-title"><strong>Current Train Schedule</strong></h3>
                 </div>
                 <div class="panel-body">
-                    <table class="table table-hover highlight responsive-table" id='trainTable'>
+                    <table class="table table-hover highlight centered responsive-table" id='trainTable'>
                         <thead>
                             <tr>
                                 <th>Train Name</th>
@@ -59,6 +68,8 @@
                     </table>
                 </div>
             </div>
+
+
 
             <!-- Add Employee  -->
             <div class="panel panel-primary">

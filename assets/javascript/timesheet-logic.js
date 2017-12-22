@@ -1,12 +1,8 @@
-// Steps to complete:
-/*
-1. Initialize Firebase
-2. Create button for adding new employees - then update the html + update the database
-3. Create a way to retrieve employees from the employee database.
-4. Create a way to calculate the months worked. Using difference between start and current time. Then use moment.js formatting to set difference in months.
-5. Calculate Total billed
-
-*/
+//Run Clock
+ setInterval(function(){
+   $('.current-time').html(moment().format('hh:mm:ss A'))
+ }, 1000);
+ 
 // 1. Initialize Firebase
 var config = {
     apiKey: "AIzaSyAVwWAUfHyk4_wozPcLaIRG2sRJaMUgQVM",
@@ -51,8 +47,8 @@ database.ref().on("child_added", function(childSnapshot) {
   var destination = childSnapshot.val().place;
   var firstTrain = childSnapshot.val().ftrain;
   var frequency = childSnapshot.val().freq;
-  // first Train pushed back to make sure it comes before current time
-  var firstTimeConverted = moment(firstTrain, "HH:mm");
+  // pushed back 1 year to make sure it comes before current time
+  var firstTimeConverted = moment(firstTrain, "HH:mm").subtract(1, 'years');
   console.log(firstTimeConverted);
   var currentTime = moment().format("HH:mm");
   console.log("CURRENT TIME: " + currentTime);
@@ -65,7 +61,16 @@ database.ref().on("child_added", function(childSnapshot) {
   console.log(timeRemainder);
   // to calculate minutes till train,we store it in a variable
   var minToTrain = frequency - timeRemainder;
+
+//post time
+ var now = moment().format('MMMM Do YYYY, h:mm:ss a');
+console.log(now);
   // next train
   var nxTrain = moment().add(minToTrain, "minutes").format("HH:mm");
   $("#trainTable>tbody").append("<tr><td>" + trainName + "</td><td>" + destination + "</td><td>" + nxTrain + "</td><td>" + frequency + "</td><td>" + minToTrain + "</td></tr>");
 });
+
+//refreshes train data every minute
+setInterval(function(){
+    location.reload();
+  }, 60000)
