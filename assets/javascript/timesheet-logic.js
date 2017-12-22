@@ -9,96 +9,63 @@
 */
 // 1. Initialize Firebase
 var config = {
-  apiKey: "AIzaSyAVwWAUfHyk4_wozPcLaIRG2sRJaMUgQVM",
- authDomain: "tech-loop.firebaseapp.com",
- databaseURL: "https://tech-loop.firebaseio.com",
- projectId: "tech-loop",
- storageBucket: "tech-loop.appspot.com",
- messagingSenderId: "1057464295624"
+    apiKey: "AIzaSyAVwWAUfHyk4_wozPcLaIRG2sRJaMUgQVM",
+    authDomain: "tech-loop.firebaseapp.com",
+    databaseURL: "https://tech-loop.firebaseio.com",
+    projectId: "tech-loop",
+    storageBucket: "tech-loop.appspot.com",
+    messagingSenderId: "1057464295624"
 };
 firebase.initializeApp(config);
 
 var database = firebase.database();
-
-
-// 2. Button for adding Employees
-$("#addEmployeeBtn").on("click", function(){
-
-    // Grabs user input
-    var empName = $("#employeeNameInput").val().trim();
-    var empRole = $("#roleInput").val().trim();
-    var empStart = moment($("#startInput").val().trim(), "DD/MM/YY").format("X");
-    var empRate = $("#rateInput").val().trim();
-
-    // Creates local "temporary" object for holding employee data
-    var newEmp = {
-        name:  empName,
-        role: empRole,
-        start: empStart,
-        rate: empRate
-    }
-
-    // Uploads employee data to the database
-    database.ref().push(newEmp);
-
-    // Logs everything to console
-    console.log(newEmp.name);
-    console.log(newEmp.role);
-    console.log(newEmp.start);
-    console.log(newEmp.rate)
-
-    // Alert
-    alert("Employee successfully added");
-
-    // Clears all of the text-boxes
-    $("#employeeNameInput").val("");
-    $("#roleInput").val("");
-    $("#startInput").val("");
-    $("#rateInput").val("");
-
-    // Prevents moving to new page
-    return false;
+$('#addTrainBtn').on("click", function() {
+  // take user input
+  var trainName = $("#trainNameInput").val().trim();
+  var destination = $("#destinationInput").val().trim();
+  var firstTrain = moment($("#timeInput").val().trim(), "HH:mm").format("HH:mm");
+  var frequency = $("#frequencyInput").val().trim();
+  // to create local temporary object to hold train data
+  var newTrain = {
+    name: trainName,
+    place: destination,
+    ftrain: firstTrain,
+    freq: frequency
+  }
+  // uploads train data to the database
+  database.ref().push(newTrain);
+  console.log(newTrain.name);
+  // clears all the text-boxes
+  $("#trainNameInput").val("");
+  $("#destinationInput").val("");
+  $("#timeInput").val("");
+  $("#frequencyInput").val("");
+  // Prevents moving to new page
+  return false;
 });
-
-
-// 3. Create Firebase event for adding employee to the database and a row in the html when a user adds an entry
-database.ref().on("child_added", function(childSnapshot, prevChildKey){
-
-    console.log(childSnapshot.val());
-
-    // Store everything into a variable.
-    var empName = childSnapshot.val().name;
-    var empRole = childSnapshot.val().role;
-    var empStart = childSnapshot.val().start;
-    var empRate = childSnapshot.val().rate;
-
-    // Employee Info
-    console.log(empName);
-    console.log(empRole);
-    console.log(empStart);
-    console.log(empRate);
-
-    // Prettify the employee start
-    var empStartPretty = moment.unix(empStart).format("MM/DD/YY");
-    // Calculate the months worked using hardconre math
-    // To calculate the months worked
-    var empMonths = moment().diff(moment.unix(empStart, 'X'), "months");
-    console.log(empMonths);
-
-    // Calculate the total billed rate
-    var empBilled = empMonths * empRate;
-    console.log(empBilled);
-
-    // Add each train's data into the table
-    $("#employeeTable > tbody").append("<tr><td>" + empName + "</td><td>" + empRole + "</td><td>" + empStartPretty + "</td><td>" + empMonths + "</td><td>" + empRate + "</td><td>" + empBilled + "</td></tr>");
-
+//  Created a firebase event listner for adding trains to database and a row in the html when the user adds an entry
+database.ref().on("child_added", function(childSnapshot) {
+  console.log(childSnapshot.val());
+  // Now we store the childSnapshot values into a variable
+  var trainName = childSnapshot.val().name;
+  var destination = childSnapshot.val().place;
+  var firstTrain = childSnapshot.val().ftrain;
+  var frequency = childSnapshot.val().freq;
+  // first Train pushed back to make sure it comes before current time
+  var firstTimeConverted = moment(firstTrain, "HH:mm");
+  console.log(firstTimeConverted);
+  var currentTime = moment().format("HH:mm");
+  console.log("CURRENT TIME: " + currentTime);
+  // store difference between currentTime and fisrt train converted in a variable.
+  var timeDiff = moment().diff(moment(firstTimeConverted), "minutes");
+  console.log(firstTrain);
+  console.log("Difference in Time: " + timeDiff);
+  // find Remainder of the time left and store in a variable
+  var timeRemainder = timeDiff % frequency;
+  console.log(timeRemainder);
+  // to calculate minutes till train,we store it in a variable
+  var minToTrain = frequency - timeRemainder;
+  // next train
+  var nxTrain = moment().add(minToTrain, "minutes").format("HH:mm");
+  $("#trainTable>tbody").append("<tr><td>" + trainName + "</td><td>" + destination + "</td><td>" + nxTrain + "</td><td>" + frequency + "</td><td>" + minToTrain + "</td></tr>");
 });
-
-
-// Example Time Math
-// -----------------------------------------------------------------------------
-// Assume Employee start date of January 1, 2015
-// Assume current date is March 1, 2016
-
-// We know that this is 15 months.
-// Now we will create code in moment.js to confirm that any attempt we use mets this test case

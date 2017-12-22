@@ -4,12 +4,16 @@
     <meta charset="UTF-8">
     <title>CalTrain Time Tracker</title>
     <!-- Latest compiled and minified CSS -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+ -->    <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+<!--     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+ -->    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
 
+  </head>
     <!-- Firebase Reference -->
     <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
 
@@ -20,14 +24,14 @@
 <body>
 
 
-<!-- Employee Tracker -->
+<!-- Train Tracker -->
 <div class="container">
 
     <!-- Jumbotron -->
     <div class="jumbotron" style="background-color: crimson; color: white">
-        <h1 class="text-center">CalTrain Time Schedule</h1>
-        <img src="assets/images/caltrain.jpg" class="img-responsive rounded" alt="Responsive image">
-        <h3 class="text-center">A Comprehensive Directory of Employee Billable Hours</h3>
+        <h1 class="nav-header center">CalTrain Time Schedule</h1>
+        <img src="assets/images/caltrain.jpg" class="img-responsive rounded center" alt="Responsive image">
+        <h3 class="tagline center">SF Southbound Real-Time Schedule</h3>
     </div>
 
     <div class="row">
@@ -39,13 +43,13 @@
                     <h3 class="panel-title"><strong>Current Train Schedule</strong></h3>
                 </div>
                 <div class="panel-body">
-                    <table class="table table-hover" id='employeeTable'>
+                    <table class="table table-hover highlight responsive-table" id='trainTable'>
                         <thead>
                             <tr>
                                 <th>Train Name</th>
                                 <th>Destination</th>
-                                <th>Frequency (mins)</th>
                                 <th>Next Arrival</th>
+                                <th>Frequency (mins)</th>
                                 <th>Minutes Away</th>
                             </tr>
                         </thead>
@@ -65,27 +69,38 @@
 
 
                 <!-- Entry Form -->
-                <form>
-                    <div class="form-group">
-                        <label for="">Train Name</label>
-                        <input type="text" class="form-control" id="employeeNameInput">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="">Destination</label>
-                        <input type="text" class="form-control" id="roleInput">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="">First Train Time (HH:mm - Military Time)</label>
-                        <input type="text" class="form-control" id="startInput">
-                    </div>
-
-
-                    <button type="submit" class="btn btn-primary" id="addEmployeeBtn">Submit</button>
-                </form>
-
-                </div>
+                <!--Form Begin -->
+      <div class="row">
+    <form id="mainForm" class="col s12">
+      <div class="row">
+        <div class="input-field col s12">
+          <label for="trainName">Train Name</label>
+          <input placeholder="i.e. Hogwarts Express" id="trainNameInput" type="text" class="validate">
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <label for="destination">Destination</label>
+          <input placeholder="i.e. 	Hogwarts Academy" id="destinationInput" type="text" class="validate">
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <label for="firstTrain">First Train Time</label>
+          <input placeholder="(HH:MM) Miltary Time" id="timeInput" type="text" class="validate">
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <label for="frequency">Frequency</label>
+          <input placeholder="Frequency (minutes)" id="frequencyInput" type="text" class="validate">
+        </div>
+      </div>
+      <button id="addTrainBtn" class="btn waves-effect waves-light" type="submit">Submit
+        <i class="material-icons right"></i>
+      </button>
+    </form>
+  </div>
             </div>
 
         </div>
